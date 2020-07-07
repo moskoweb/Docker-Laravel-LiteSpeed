@@ -1,5 +1,6 @@
 FROM litespeedtech/openlitespeed:latest
 COPY install.sh /usr/local/bin/
+COPY .htaccess /var/www/vhosts/localhost
 
 LABEL version="0.0.1"
 LABEL description="PHP/MySQL com Litespeed"
@@ -31,7 +32,5 @@ ENV PATH="${PATH}:/usr/local/lsws/lsphp74/bin/"
 WORKDIR /var/www/vhosts/localhost/html
 
 CMD ["sh", "/usr/local/bin/install.sh"]
-
-COPY .htaccess /var/www/vhosts/localhost/html
 
 RUN /usr/local/lsws/bin/lswsctrl restart

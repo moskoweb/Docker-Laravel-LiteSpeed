@@ -53,6 +53,8 @@ if [ ! -e .env ]; then
     fi
 fi
 
+mv /var/www/vhosts/localhost/.htaccess /var/www/vhosts/localhost/html/.htaccess
+
 chown -R lsadm:lsadm .*
 chmod -R g+rw .*
 chown -R lsadm:lsadm *
