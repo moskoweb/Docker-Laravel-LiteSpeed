@@ -28,10 +28,29 @@ cd /var/www/vhosts/localhost/html
 
 if [ -n "$LARAVEL_INSTALL" ]; then
     echo "Laravel | Install"
+    rm -rf *
     composer create-project --prefer-dist laravel/laravel .
 else
     echo "PHP | Install"
-    echo "<h1>Hello World!</h1>" >> index.php
+    mkdir public
+    echo "<h1>Hello World</h1>" >> public/index.php
+fi
+
+if [ ! -e .env ]; then
+    sed -i "s/APP_ENV=local/APP_ENV=production/g" .env
+    sed -i "s/APP_DEBUG=true/APP_DEBUG=false/g" .env
+    
+    if [ -n "$VIRTUAL_HOST" ]; then
+        sed -i "s/APP_URL=http:\/\/localhost/APP_URL=http:\/\/$VIRTUAL_HOST/g" .env
+    fi
+    
+    if [ -n "$DB_NAME" ]; then
+        sed -i "s/DB_HOST=127.0.0.1/DB_HOST=$DB_HOST/g" .env
+        sed -i "s/DB_PORT=3306/DB_PORT=$DB_PORT/g" .env
+        sed -i "s/DB_DATABASE=laravel/DB_DATABASE=$DB_NAME/g" .env
+        sed -i "s/DB_USERNAME=root/DB_USERNAME=$DB_USER/g" .env
+        sed -i "s/DB_PASSWORD=/DB_PASSWORD=$DB_PASS/g" .env
+    fi
 fi
 
 chown -R lsadm:lsadm .*
