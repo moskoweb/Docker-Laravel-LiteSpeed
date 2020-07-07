@@ -36,7 +36,7 @@ else
     echo "<h1>Hello World</h1>" >> public/index.php
 fi
 
-if [ ! -e .env ]; then
+if [ -e .env ]; then
     sed -i "s/APP_ENV=local/APP_ENV=production/g" .env
     sed -i "s/APP_DEBUG=true/APP_DEBUG=false/g" .env
     
