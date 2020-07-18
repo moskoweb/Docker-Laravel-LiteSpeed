@@ -24,6 +24,13 @@ sed -i "s/max_input_time = 60/max_input_time = $PHP_INI_EXECUTION_TIME/g" /usr/l
 sed -i "s/memory_limit = 128M/memory_limit = $PHP_INI_MEMORY_LIMIT/g" /usr/local/lsws/lsphp74/etc/php/7.4/litespeed/php.ini
 sed -i "s/;max_input_vars = 1000/max_input_vars = 3000/g" /usr/local/lsws/lsphp74/etc/php/7.4/litespeed/php.ini
 
+echo "Laravel | Cron Job Set"
+crontab -l > tempcron
+echo "# Laravel Cron Job" >> tempcron
+echo "* * * * * cd /var/www/vhosts/localhost/html/ && php artisan schedule:run >> /dev/null 2>&1" >> tempcron
+crontab tempcron
+rm tempcron
+
 cd /var/www/vhosts/localhost/html
 
 if [ -n "$LARAVEL_INSTALL" ]; then
@@ -36,7 +43,7 @@ else
     echo "<h1>Hello World</h1>" >> public/index.php
 fi
 
-if [ -e .env ]; then
+if [ -e ".env" ]; then
     sed -i "s/APP_ENV=local/APP_ENV=production/g" .env
     sed -i "s/APP_DEBUG=true/APP_DEBUG=false/g" .env
     
@@ -52,13 +59,6 @@ if [ -e .env ]; then
         sed -i "s/DB_PASSWORD=/DB_PASSWORD=$DB_PASS/g" .env
     fi
 fi
-
-echo "Laravel | Cron Job Set"
-    crontab -l > tempcron
-    echo "# Laravel Cron Job" >> tempcron
-    echo "* * * * * cd /var/www/vhosts/localhost/html/ && php artisan schedule:run >> /dev/null 2>&1" >> tempcron
-    crontab tempcron
-    rm tempcron
 
 mv /var/www/vhosts/localhost/.htaccess /var/www/vhosts/localhost/html/.htaccess
 
