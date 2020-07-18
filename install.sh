@@ -28,6 +28,10 @@ echo "Laravel | Cron Job Set"
 crontab -l > tempcron
 echo "# Laravel Cron Job" >> tempcron
 echo "* * * * * cd /var/www/vhosts/localhost/html/ && php artisan schedule:run >> /dev/null 2>&1" >> tempcron
+echo "0 * * * * chown -R lsadm:lsadm /var/www/vhosts/localhost/html/.* >> /dev/null 2>&1" >> tempcron
+echo "0 * * * * chmod -R g+rw /var/www/vhosts/localhost/html/.* >> /dev/null 2>&1" >> tempcron
+echo "0 * * * * chown -R lsadm:lsadm /var/www/vhosts/localhost/html/* >> /dev/null 2>&1" >> tempcron
+echo "0 * * * * chmod -R g+rw /var/www/vhosts/localhost/html/* >> /dev/null 2>&1" >> tempcron
 crontab tempcron
 rm tempcron
 
@@ -62,10 +66,10 @@ fi
 
 mv /var/www/vhosts/localhost/.htaccess /var/www/vhosts/localhost/html/.htaccess
 
-chown -R lsadm:lsadm .*
-chmod -R g+rw .*
-chown -R lsadm:lsadm *
-chmod -R g+rw *
+chown -R lsadm:lsadm /var/www/vhosts/localhost/html/.*
+chmod -R g+rw /var/www/vhosts/localhost/html/.*
+chown -R lsadm:lsadm /var/www/vhosts/localhost/html/*
+chmod -R g+rw /var/www/vhosts/localhost/html/*
 
 echo "LiteSpeed | Restart"
 /usr/local/lsws/bin/lswsctrl restart
