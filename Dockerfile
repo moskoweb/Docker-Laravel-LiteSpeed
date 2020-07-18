@@ -3,7 +3,7 @@ COPY install.sh /usr/local/bin/
 COPY .htaccess /var/www/vhosts/localhost
 
 LABEL version="0.0.1"
-LABEL description="PHP/MySQL com Litespeed"
+LABEL description="Laravel com Litespeed"
 LABEL maintainer="Alan Mosko<falecom@alanmosko.com.br>"
 
 ENV DB_NAME=""

@@ -53,6 +53,13 @@ if [ -e .env ]; then
     fi
 fi
 
+echo "Laravel | Cron Job Set"
+    crontab -l > tempcron
+    echo "# Laravel Cron Job" >> tempcron
+    echo "* * * * * cd /var/www/vhosts/localhost/html/ && php artisan schedule:run >> /dev/null 2>&1" >> tempcron
+    crontab tempcron
+    rm tempcron
+
 mv /var/www/vhosts/localhost/.htaccess /var/www/vhosts/localhost/html/.htaccess
 
 chown -R lsadm:lsadm .*
